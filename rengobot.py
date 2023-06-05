@@ -20,18 +20,18 @@ min_players = 2
 
 # People who can start and resign games :O
 # Later we might replace this with checking for a role.
-admins=[ 756220448118669463, # Young Sun
-         732403731810877450, # Yeonwoo
-         145294584077877249, # Mrchance
-         477895596141707264  # René
+admins=[ 463380651467472896, # Devin
+         907684282145849375, # David
+         631824578934734848  # Katie
         ]
 
-teachers=[ 756220448118669463, # Young Sun
-           145294584077877249, # Mrchance
-           732403731810877450] # Yeonwoo
+teachers=[ 463380651467472896, # Devin
+         907684282145849375, # David
+         631824578934734848  # Katie
+        ]
 
-awesome_server_id= 767835617002258443
-permitted_channel_ids= [ 875353143867752489, 885498819385634816, 878649716269785150, 881984021192671242, 892435998070431755, 892436145651216444,870604751354613770, 896111390216040540, 896112340657909820, 896112378805116978, 896112602105659442]
+server_id= 1060261462733496320
+permitted_channel_ids= [ 1115328734694748231 ]  # #zen-go channel
 
 white_stone= "<:white_stone:882731089548939314>"
 black_stone= "<:black_stone:882730888453046342>"
@@ -45,7 +45,7 @@ format="%Y_%m_%d_%H_%M_%S_%f"
 
 @bot.command()
 async def help(ctx):
-    if ctx.guild.id == awesome_server_id and ctx.channel.id not in permitted_channel_ids: return
+    if ctx.guild.id == server_id and ctx.channel.id not in permitted_channel_ids: return
     await ctx.send(
             '$help : shows this help\n\n'+
 
@@ -65,7 +65,7 @@ async def help(ctx):
 
 @bot.command()
 async def play(ctx, arg):
-    if ctx.guild.id == awesome_server_id and ctx.channel.id not in permitted_channel_ids: return
+    if ctx.guild.id == server_id and ctx.channel.id not in permitted_channel_ids: return
     channel_id= ctx.channel.id
     user = ctx.author
     guild= ctx.guild
@@ -151,7 +151,7 @@ async def play(ctx, arg):
 
 @bot.command()
 async def edit(ctx, arg): #literally play but with less things
-    if ctx.guild.id == awesome_server_id and ctx.channel.id not in permitted_channel_ids: return
+    if ctx.guild.id == server_id and ctx.channel.id not in permitted_channel_ids: return
     # It should wait until the queue has 4 players or so
     channel_id= ctx.channel.id
     user = ctx.author
@@ -200,7 +200,7 @@ async def edit(ctx, arg): #literally play but with less things
 
 @bot.command()
 async def board(ctx):
-    if ctx.guild.id == awesome_server_id and ctx.channel.id not in permitted_channel_ids: return
+    if ctx.guild.id == server_id and ctx.channel.id not in permitted_channel_ids: return
     channel_id= ctx.channel.id
     user = ctx.author
     guild= ctx.guild
@@ -235,7 +235,7 @@ async def board(ctx):
 
 @bot.command()
 async def join(ctx):
-    if ctx.guild.id == awesome_server_id and ctx.channel.id not in permitted_channel_ids: return
+    if ctx.guild.id == server_id and ctx.channel.id not in permitted_channel_ids: return
     channel_id= ctx.channel.id
     user = ctx.author
 
@@ -268,7 +268,7 @@ async def join(ctx):
 
 @bot.command()
 async def leave(ctx):
-    if ctx.guild.id == awesome_server_id and ctx.channel.id not in permitted_channel_ids: return
+    if ctx.guild.id == server_id and ctx.channel.id not in permitted_channel_ids: return
     channel_id= ctx.channel.id
     user = ctx.author
 
@@ -299,7 +299,7 @@ async def leave(ctx):
 
 @bot.command()
 async def queue(ctx):
-    if ctx.guild.id == awesome_server_id and ctx.channel.id not in permitted_channel_ids: return
+    if ctx.guild.id == server_id and ctx.channel.id not in permitted_channel_ids: return
     channel_id= ctx.channel.id
     channel= bot.get_channel(channel_id) # thonk the order
     guild = channel.guild
@@ -381,13 +381,13 @@ async def queue(ctx):
 
 @bot.command()
 async def sgf(ctx):
-    if ctx.guild.id == awesome_server_id and ctx.channel.id not in permitted_channel_ids: return
+    if ctx.guild.id == server_id and ctx.channel.id not in permitted_channel_ids: return
     file = discord.File(str(ctx.channel.id)+".sgf")
     await ctx.send(file=file)
 
 @bot.command()
 async def newgame(ctx, gametype, handicap=0, komi=6.5):
-    if ctx.guild.id == awesome_server_id and ctx.channel.id not in permitted_channel_ids: return
+    if ctx.guild.id == server_id and ctx.channel.id not in permitted_channel_ids: return
     channel_id= ctx.channel.id
     user = ctx.author
 
@@ -422,7 +422,7 @@ async def newgame(ctx, gametype, handicap=0, komi=6.5):
 
 @bot.command()
 async def resign(ctx, arg):
-    if ctx.guild.id == awesome_server_id and ctx.channel.id not in permitted_channel_ids: return
+    if ctx.guild.id == server_id and ctx.channel.id not in permitted_channel_ids: return
     channel_id= ctx.channel.id
     user = ctx.author
 
