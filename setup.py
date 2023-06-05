@@ -4,5 +4,5 @@ from setuptools import setup
 setup(name='ZenGoBot',
       version='1.0',
       description='Zen Go, forked from AwesomeRengoBot',
-      packages=['sgfengine', 'rengobot'],
+      py_modules=['sgfengine', 'rengobot'],
      )
