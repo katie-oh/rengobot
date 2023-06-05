@@ -45,6 +45,10 @@ format="%Y_%m_%d_%H_%M_%S_%f"
 
 @bot.command()
 async def help(ctx):
+    print(ctx.guild.id)
+    print(server_id)
+    print(ctx.channel.id)
+    print(permitted_channel_ids)
     if ctx.guild.id == server_id and ctx.channel.id not in permitted_channel_ids: return
     await ctx.send(
             '$help : shows this help\n\n'+
