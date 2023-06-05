@@ -1,4 +1,6 @@
-*.txt
+# *.txt
+state.txt
+token.txt
 *.sgf
 *.png
 *.out
