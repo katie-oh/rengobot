@@ -33,7 +33,6 @@ def next_colour(channel_id):
     with open(channel_id+".sgf","rb") as f:
         game = sgf.Sgf_game.from_bytes(f.read())
     f.close()
-
     node= game.get_last_node()
     return 1 if ("B" in node.properties() or "AB" in node.properties()) else 0
 

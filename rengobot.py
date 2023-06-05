@@ -22,12 +22,12 @@ min_players = 2
 # Later we might replace this with checking for a role.
 admins=[ 463380651467472896, # Devin
          907684282145849375, # David
-         631824578934734848  # Katie
+        #  631824578934734848  # Katie
         ]
 
 teachers=[ 463380651467472896, # Devin
          907684282145849375, # David
-         631824578934734848  # Katie
+        #  631824578934734848  # Katie
         ]
 
 server_id= 1060261462733496320
@@ -44,11 +44,11 @@ format="%Y_%m_%d_%H_%M_%S_%f"
 # The state is a list of tuples (channel_id, "queue"/"random", last_players, last_times, [black_queue, white_queue])
 
 @bot.command()
+async def blah(ctx):
+    await ctx.send("blah")
+
+@bot.command()
 async def help(ctx):
-    print(ctx.guild.id)
-    print(server_id)
-    print(ctx.channel.id)
-    print(permitted_channel_ids)
     if ctx.guild.id == server_id and ctx.channel.id not in permitted_channel_ids: return
     await ctx.send(
             '$help : shows this help\n\n'+
@@ -464,32 +464,57 @@ async def background_task():
         try:
             # lowest effort serialization
             with open("state.txt") as f: state = ast.literal_eval(f.read())
-            #print(state)
+            # print(state)
 
             #TODO find who has to move, skip players accordingly, notify if any has to move
-            for i in range(len(state)):
-                if state[i][3] == [] or state[i][1]=="random": continue
+            # for i in range(len(state)):
+            #     print("dfgj")
+            #     if state[i][3] == [] or state[i][1]=="random": continue
 
-                channel_id= state[i][0]
-                channel= bot.get_channel(channel_id)
+            #     channel_id=permitted_channel_ids[0]
+            #     channel= bot.get_channel(channel_id)
 
-                colour = sgfengine.next_colour(str(channel_id))
-                if state[i][1]=="teachers" and colour=="1": continue #Ask the teachers if they want a ping
+            #     colour = sgfengine.next_colour(str(channel_id))
+            #     if state[i][1]=="teachers" and colour=="1": continue #Ask the teachers if they want a ping
 
-                last_time= datetime.strptime(state[i][3][-1],format)
-                time_left= last_time + time_to_skip-datetime.now()
+            #     last_time= datetime.strptime(state[i][3][-1],format)
+            #     time_left= last_time + time_to_skip-datetime.now()
 
-                if time_left < time_to_skip/3.0 and time_left > time_to_skip/3.0-timedelta(seconds=10): # Probably remove? Depends on how passive aggressive it is
-                    next_user = await guild.fetch_member(state[i][4][colour][0])
-                    await channel.send("{}'s turn! Time is running up!".format(next_user.mention))#, time_left.total_seconds()/3600) )
-                if time_left < timedelta():
-                    state[i][3][-1]= datetime.strftime(datetime.now(),format)
-                    state[i][2][-1]= None
-                    user_id= state[i][4][colour][0]
-                    state[i][4][colour].pop(0)
-                    state[i][4][colour].append(user_id)
-                    next_player=(await guild.fetch_member(state[i][4][colour][0]))
-                    await channel.send(content="{}'s turn! ⭐".format(next_player.mention))
+            #     if time_left < time_to_skip/3.0 and time_left > time_to_skip/3.0-timedelta(seconds=10): # Probably remove? Depends on how passive aggressive it is
+            #         next_user = await guild.fetch_member(state[i][4][colour][0])
+            #         await channel.send("{}'s turn! Time is running up!".format(next_user.mention))#, time_left.total_seconds()/3600) )
+            #     if time_left < timedelta():
+            #         state[i][3][-1]= datetime.strftime(datetime.now(),format)
+            #         state[i][2][-1]= None
+            #         user_id= state[i][4][colour][0]
+            #         state[i][4][colour].pop(0)
+            #         state[i][4][colour].append(user_id)
+            #         next_player=(await guild.fetch_member(state[i][4][colour][0]))
+            #         await channel.send(content="{}'s turn! ⭐".format(next_player.mention))
+
+            # for i in range(len(state)):
+            # if state[i][3] == [] or state[i][1]=="random": continue
+
+            channel_id=permitted_channel_ids[0]
+            channel= bot.get_channel(channel_id)
+
+            colour = sgfengine.next_colour(str(channel_id))
+            # if state[i][1]=="teachers" and colour=="1": continue #Ask the teachers if they want a ping
+
+            # last_time= datetime.strptime(state[i][3][-1],format)
+            # time_left= last_time + time_to_skip-datetime.now()
+
+            # if time_left < time_to_skip/3.0 and time_left > time_to_skip/3.0-timedelta(seconds=10): # Probably remove? Depends on how passive aggressive it is
+            #     next_user = await guild.fetch_member(state[i][4][colour][0])
+            #     await channel.send("{}'s turn! Time is running up!".format(next_user.mention))#, time_left.total_seconds()/3600) )
+            # if time_left < timedelta():
+            #     state[i][3][-1]= datetime.strftime(datetime.now(),format)
+            #     state[i][2][-1]= None
+            #     user_id= state[i][4][colour][0]
+            #     state[i][4][colour].pop(0)
+            #     state[i][4][colour].append(user_id)
+            #     next_player=(await guild.fetch_member(state[i][4][colour][0]))
+            #     await channel.send(content="{}'s turn! ⭐".format(next_player.mention))
 
             with open("state.txt", "w") as f: f.write(repr(state))
             await asyncio.sleep(10)
