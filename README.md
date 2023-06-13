@@ -6,3 +6,8 @@ A discord bot for playing rengo games!
 - python-sgfmill
 
 Make sure to run the bot in an environment with read/write permissions
+
+
+* installed Rust
+* updated requirements.txt
+* updated admin and teachers

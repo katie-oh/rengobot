@@ -7,31 +7,47 @@ import asyncio
 import sgfengine
 
 import discord
-from discord.ext import commands
+from discord.ext import commands, tasks
+
+# import requests
+# import raw_input
 
 # We don't use fancy slash commands here. It seems there is this library for python but it looks a bit more involved.
 # https://pypi.org/project/discord-py-slash-command/
 
-bot = commands.Bot(command_prefix='$', help_command=None)
+# res = requests.get("https://sh.rustup.rs")
+# print(res)
+# os.system("curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh")
+# os.system("cargo install sgf-render")
+# os.system("cargo --version")
+# raw_input()
+
+intents = discord.Intents.default()
+# intents.message_content = True
+# client = discord.Client(intents=intents)
+# bot = commands.Bot(command_prefix='$', intents=intents)
+bot = commands.Bot(command_prefix='$', intents=intents, help_command=None)
 
 min_time_player= timedelta(seconds=1) # in random games, min time between same player plays (default days=1)
-time_to_skip= timedelta(days=1) # in queue games, how much time to wait for the next move
+time_to_skip= timedelta(seconds=1) # in queue games, how much time to wait for the next move
 min_players = 2
 
 # People who can start and resign games :O
 # Later we might replace this with checking for a role.
 admins=[ 463380651467472896, # Devin
          907684282145849375, # David
-        #  631824578934734848  # Katie
+         631824578934734848  # Katie
         ]
 
 teachers=[ 463380651467472896, # Devin
          907684282145849375, # David
-        #  631824578934734848  # Katie
+         631824578934734848  # Katie
         ]
 
-server_id= 1060261462733496320
-permitted_channel_ids= [ 1115328734694748231 ]  # #zen-go channel
+# server_id= 1060261462733496320 # Columbus Go Club
+server_id= 1115830515396792342
+permitted_channel_ids= [ 1115612796734943374 ]  #zen-go channel
+#permitted_channel_ids= [ 1115830516046893109 ]  #my channel
 
 white_stone= "<:white_stone:882731089548939314>"
 black_stone= "<:black_stone:882730888453046342>"
@@ -79,7 +95,7 @@ async def play(ctx, arg):
 
     filter_state= [i for i in range(len(state))  if state[i][0] == channel_id] # This is where I should use a fancy next()
     if not filter_state:
-        await ctx.send("No active game in this channel!")
+        # await ctx.send("No active game in this channel!")
         return
 
     i= filter_state[0]
@@ -103,7 +119,7 @@ async def play(ctx, arg):
 
         if len(state[i][2])>0 and state[i][2][-1] == user.id and (state[i][1]!="teachers" or colour=="0"):
             await ctx.send("No two consecutive moves by the same player!")
-            # return
+            return
 
         for j in range(len(state[i][2])):
             if (state[i][2][j] == user.id and
@@ -150,6 +166,9 @@ async def play(ctx, arg):
         await ctx.send(file=file, content="Teachers' turn! ⭐")
     else:
         await ctx.send(file=file)
+
+    colour_text="B" if colour else "W"
+    await ctx.send(colour_text+ "'s turn!")
 
     with open("state.txt", "w") as f: f.write(repr(state))
 
@@ -452,11 +471,12 @@ async def resign(ctx, arg):
 
     with open("state.txt", "w") as f: f.write(repr(state))
 
+@tasks.loop(seconds = 10)
 async def background_task():
     await bot.wait_until_ready()
     print("bot ready!")
 
-    guild=discord.utils.get(bot.guilds, name="Awesome Baduk")
+    guild=discord.utils.get(bot.guilds, name="Columbus Go Club")
     game=discord.Game("multiplayer Baduk! $help for command list")
     await bot.change_presence(status=discord.Status.online, activity=game)
 
@@ -524,3 +544,12 @@ async def background_task():
 
 bot.loop.create_task(background_task())
 bot.run(token)
+
+
+# @bot.event
+# async def on_ready():
+#     background_task.start()
+#     bot.run(token)
+
+# background_task.start()
+# bot.run(token)
