@@ -1,3 +1,2 @@
-git+https://github.com/katie-oh/rengobot 
 sgfmill
 python-discord
