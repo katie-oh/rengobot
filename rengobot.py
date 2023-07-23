@@ -1,13 +1,13 @@
-import os
 import ast
+import asyncio
+import os
 import time
 from datetime import datetime, timedelta
-import asyncio
-
-import sgfengine
 
 import discord
 from discord.ext import commands, tasks
+
+import sgfengine
 
 # import requests
 # import raw_input
@@ -119,6 +119,10 @@ async def play(ctx, arg):
 
         if len(state[i][2])>0 and state[i][2][-1] == user.id and (state[i][1]!="teachers" or colour=="0"):
             await ctx.send("No two consecutive moves by the same player!")
+            return
+
+        if len(state[i][2])>1 and state[i][2][-2] == user.id and (state[i][1]!="teachers" or colour=="0"):
+            await ctx.send("No two consecutive same-color moves by the same player!")
             return
 
         for j in range(len(state[i][2])):
