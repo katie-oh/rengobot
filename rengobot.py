@@ -44,8 +44,8 @@ teachers=[ 463380651467472896, # Devin
          631824578934734848  # Katie
         ]
 
-# server_id= 1060261462733496320 # Columbus Go Club
-server_id= 1115830515396792342
+server_id= 1060261462733496320 # Columbus Go Club
+# server_id= 1115830515396792342
 permitted_channel_ids= [ 1115612796734943374 ]  #zen-go channel
 #permitted_channel_ids= [ 1115830516046893109 ]  #my channel
 
