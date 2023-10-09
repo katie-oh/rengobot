@@ -23,7 +23,7 @@ import sgfengine
 # raw_input()
 
 intents = discord.Intents.default()
-# intents.message_content = True
+intents.message_content = True
 # client = discord.Client(intents=intents)
 # bot = commands.Bot(command_prefix='$', intents=intents)
 bot = commands.Bot(command_prefix='$', intents=intents, help_command=None)
@@ -36,24 +36,32 @@ min_players = 2
 # Later we might replace this with checking for a role.
 admins=[ 463380651467472896, # Devin
          907684282145849375, # David
-         631824578934734848  # Katie
+         631824578934734848, # Katie
+         489423695102869535  # Tim
         ]
 
 teachers=[ 463380651467472896, # Devin
          907684282145849375, # David
-         631824578934734848  # Katie
+         631824578934734848, # Katie
+         489423695102869535  # Tim
         ]
 
 server_id= 1060261462733496320 # Columbus Go Club
-# server_id= 1115830515396792342
-permitted_channel_ids= [ 1115612796734943374 ]  #zen-go channel
-#permitted_channel_ids= [ 1115830516046893109 ]  #my channel
+# server_id= 1115830515396792342 # Katie's test server
+# server_id = 1132772102504726708 # Tim's test server
+
+server_name = "Columbus Go Club"
+# server_name = "Tim's Server"
+
+permitted_channel_ids= [ 1115612796734943374 ] # zen-go channel
+# permitted_channel_ids= [ 1115830516046893109 ] # Katie's test channel
+# permitted_channel_ids = [ 1132772102504726710 ] # Tim's test channel
 
 white_stone= "<:white_stone:882731089548939314>"
 black_stone= "<:black_stone:882730888453046342>"
 
 with open("token.txt") as f:
-    token = f.readlines()[0] # Get your own token and put it in token.txt
+    token = f.readlines()[0].strip() # Get your own token and put it in token.txt
 
 format="%Y_%m_%d_%H_%M_%S_%f"
 
@@ -480,7 +488,7 @@ async def background_task():
     await bot.wait_until_ready()
     print("bot ready!")
 
-    guild=discord.utils.get(bot.guilds, name="Columbus Go Club")
+    guild=discord.utils.get(bot.guilds, name=server_name)
     game=discord.Game("multiplayer Baduk! $help for command list")
     await bot.change_presence(status=discord.Status.online, activity=game)
 
@@ -546,14 +554,11 @@ async def background_task():
         except ConnectionResetError:
             print("Connection error")
 
-bot.loop.create_task(background_task())
-bot.run(token)
 
+async def main():
+    os.chdir("/data")
+    async with bot:
+        bot.loop.create_task(background_task())
+        await bot.start(token)
 
-# @bot.event
-# async def on_ready():
-#     background_task.start()
-#     bot.run(token)
-
-# background_task.start()
-# bot.run(token)
+asyncio.run(main())
